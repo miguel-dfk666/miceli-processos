@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}processos`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}posts`);
         if (!response.ok) {
           throw new Error('Network response was not ok :(');
         }

@@ -11,7 +11,7 @@ class Command(BaseCommand):
         
         for _, linha in dados_excel.iterrows():
             processo = Processo(
-                numero_processo=linha['Número do Processo'],
+                numero_processo=linha['Número'],
                 descricao=linha['Descrição'],
                 data_cadastro=linha['Data Cadastro'],
                 juiz_responsavel=linha['Juiz Responsável'],
@@ -81,6 +81,6 @@ class Command(BaseCommand):
                 advogado_centralizador=linha['Adv Centralizador'],
                 valor_risco_remoto=linha['Valor Risco Remoto'],
                 observacao=linha['Observação'],
-                data_atualizacao=linha['Data Atualizada'],
+                data_atualizada=linha['Data Atualizada'],
             )
             processo.save()

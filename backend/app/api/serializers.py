@@ -1,5 +1,25 @@
 from rest_framework.serializers import ModelSerializer
-from ..models import Processo
+from rest_framework import serializers
+from app.models import Processo, CustomUser
+
+
+class CustomUserSerializer(serializers.ModelSerializer):
+    confirm_password = serializers.CharField(write_only=True, required=True)
+    class Meta:
+        model = CustomUser
+        fields = ['email', 'username', 'password', 'confirm_password']
+        extra_kwargs = {
+            'password': {'write_only': True},
+        }
+
+    def validate(self, data):
+        if data['password'] != data['confirm_password']:
+            raise serializers.ValidationError("As senhas não coincidem.")
+        return data
+
+    def create(self, validated_data):
+        validated_data.pop('confirm_password')
+        return CustomUser.objects.create_user(**validated_data)
 
 class PostSerializer(ModelSerializer):
   class Meta:
@@ -61,6 +81,7 @@ class PostSerializer(ModelSerializer):
         'cpf_cnpj_terceiro_prestador',
         'advogado_credenciado',
         'advogado_adverso',
+        'advogado_adverso_numero_oab',
         'advogado_agressor',
         'handle_perito',
         'perito',
@@ -90,6 +111,7 @@ class PostSerializer(ModelSerializer):
         'solicitacao_encerramento_por',
         'tipo_desligamento',
         'advogado_colaborador',
+        'advogado_colaborador_numero_oab',
         'equipe',
         'data_do_fato',
         'data_alteracao_fase',
