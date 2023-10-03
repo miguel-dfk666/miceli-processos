@@ -29,7 +29,6 @@ Antes de começar, você precisa ter o Python, Django, Node.js e npm instalados 
    ```bash
    python manage.py createsuperuser
 
-
 6.**Inicie o server django:**
    ```bash
    python manage.py runserver
