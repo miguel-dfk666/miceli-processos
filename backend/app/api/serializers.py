@@ -21,6 +21,8 @@ class CustomUserSerializer(serializers.ModelSerializer):
         validated_data.pop('confirm_password')
         return CustomUser.objects.create_user(**validated_data)
 
+
+
 class PostSerializer(ModelSerializer):
   class Meta:
     model = Processo

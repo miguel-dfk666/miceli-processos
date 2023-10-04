@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
-import './styles/styles.css';
-import HomePage from './home/homepage'
-import Processo from './libs/processos';
+import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./home/homepage";
+import CustomUserPage from "./auth/customuserpage";
+import './styles/styles.css'
 
 function App() {
-  const [processos, setProcessos] = useState<Processo[]>([]);
+  const [processos, setProcessos] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -13,7 +14,7 @@ function App() {
         if (!response.ok) {
           throw new Error('Network response was not ok :(');
         }
-        const result: Processo[] = await response.json();
+        const result = await response.json();
         setProcessos(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -21,12 +22,16 @@ function App() {
     }
 
     fetchData();
-  }, []); // Note que o array de dependências está vazio, então o useEffect será executado apenas uma vez após o primeiro render
+  }, []);
 
   return (
-    <>
-      <HomePage data={processos} />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/login" Component={CustomUserPage} />
+        <Route path="/custom-users" Component={CustomUserPage} />
+        <Route path="/" Component={() => <HomePage data={processos} />} />
+      </Routes>
+    </Router>
   );
 }
 
