@@ -28,36 +28,36 @@ Antes de começar, você precisa ter o Python, Django, Node.js e npm instalados 
    ```bash
    python manage.py migrate
 
-5.**Crie um superusuário para acessar o painel de administração Django:**
+5. **Crie um superusuário para acessar o painel de administração Django:**
    ```bash
    python manage.py createsuperuser
    ```
 
-6.**Inicie o server django:**
+6. **Inicie o server django:**
    ```bash
       python manage.py runserver
    ```
 
-7.**Acesse o painel de administração Django em http://localhost:8000/admin/ e faça login com suas credenciais de superusuário.**
+7. **Acesse o painel de administração Django em http://localhost:8000/admin/ e faça login com suas credenciais de superusuário.**
 
 
 ## Configuração do Frontend
 
-1.**Navegue até o diretório frontend:**
+1. **Navegue até o diretório frontend:**
    ```bash
    cd frontend
    ```
-2.**Instale as dependências do Node.js:**
+2. **Instale as dependências do Node.js:**
    ```bash
    npm install
    ````
 
-3.**Inicie o servidor de desenvolvimento do React Vite:**
+3. **Inicie o servidor de desenvolvimento do React Vite:**
    ```bash
    npm run dev
    ```
 
-4.**Acesse o frontend em http://localhost:5173.**
+4. **Acesse o frontend em http://localhost:5173.**
 
 
 ## Uso da API
