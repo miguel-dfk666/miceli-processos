@@ -20,7 +20,7 @@ const MainContent: React.FC<MainContentProps> = ({
   onConfirmClick,
 }) => {
   return (
-    <main className="flex-1 p-4 flex flex-col">
+    <main className="flex-1 p-10 flex flex-col">
       <div className="mb-4 flex items-center">
         <Dropdown
           options={['Selecione uma opção', 'Número do Processo', 'Número OAB', 'Data de Criação']}
@@ -33,7 +33,7 @@ const MainContent: React.FC<MainContentProps> = ({
             placeholder="0000000-00.0000.0.00.0000"
             value={subOption}
             onChange={(e) => onSubOptionChange(e.target.value)}
-            className="border border-gray-300 p-2 rounded-md ml-5"
+            className="border border-gray-300 p-2 rounded-md ml-5 pr-6"
           />
         )}
         {selectedOption === 'Número OAB' && (
