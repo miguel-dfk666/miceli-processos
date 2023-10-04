@@ -10,3 +10,5 @@ router.registry.extend(post_router.registry)
 urlpatterns = [
     path('', include(router.urls)), 
 ]
+
+urlpatterns += router.urls
