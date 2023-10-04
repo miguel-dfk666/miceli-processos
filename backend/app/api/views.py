@@ -6,6 +6,8 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
 from ..models import CustomUser, Processo
 from .serializers import CustomUserSerializer, PostSerializer
+from rest_framework_jwt.settings import api_settings
+from rest_framework.views import APIView
 
 # Crie um objeto logger
 logger = logging.getLogger(__name__)
