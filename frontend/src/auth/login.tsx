@@ -1,13 +1,20 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import axios from "axios";
 
+interface FormData {
+  username_or_email: string;
+  password: string;
+}
+
 const LoginPage: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     username_or_email: "",
     password: "",
   });
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -15,12 +22,16 @@ const LoginPage: React.FC = () => {
     }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     event.preventDefault();
+
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", formData);
+      const response = await axios.post("http://localhost:8000/api/login/", formData);
       console.log(response.data);
     } catch (error) {
+      // Tratar os erros da requisição
       console.error("Erro ao fazer login:", error);
     }
   };
