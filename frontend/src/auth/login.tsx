@@ -11,6 +11,7 @@ const LoginPage: React.FC = () => {
     username_or_email: "",
     password: "",
   });
+  const [error, setError] = useState<string>("");
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -28,10 +29,11 @@ const LoginPage: React.FC = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8000/api/login/", formData);
+      const response = await axios.post("http://localhost:8000/api/login", formData);
       console.log(response.data);
+      setError(""); 
     } catch (error) {
-      // Tratar os erros da requisição
+      setError("Erro ao fazer login. Por favor, verifique suas credenciais.");
       console.error("Erro ao fazer login:", error);
     }
   };
