@@ -2,12 +2,19 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db.models import Q
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, username, password=None, **extra_fields):
         if not email:
             raise ValueError('O campo de email é obrigatório.')
         email = self.normalize_email(email)
+        username = self.model.normalize_username(username)
+        
+        # Verifica se o email ou o username já estão em uso
+        if self.filter(Q(email=email) | Q(username=username)).exists():
+            raise ValueError('Email ou nome de usuário já em uso.')
+        
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -19,9 +26,11 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, username, password, **extra_fields)
 
+
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=128)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

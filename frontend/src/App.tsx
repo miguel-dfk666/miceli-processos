@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomePage from "./home/homepage";
 import CustomUserPage from "./auth/customuserpage";
 import './styles/styles.css'
+import LoginPage from "./auth/login";
 
 function App() {
   const [processos, setProcessos] = useState([]);
@@ -27,8 +28,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/login" Component={CustomUserPage} />
-        <Route path="/custom-users" Component={CustomUserPage} />
+        <Route path="/login" Component={LoginPage} />
+        <Route path="/signup" Component={CustomUserPage} />
         <Route path="/" Component={() => <HomePage data={processos} />} />
       </Routes>
     </Router>

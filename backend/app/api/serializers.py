@@ -1,7 +1,25 @@
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 from app.models import Processo, CustomUser
+from django.db.models import Q
 
+class CustomLoginUserSerializer(serializers.ModelSerializer):
+   username_or_email = serializers.CharField(required=True)
+   password = serializers.CharField(required=True, write_only=True)
+
+   def validate(self, data):
+      username_or_email = data.get('username_or_email')
+      password = data.get('password')
+
+      if username_or_email and password:
+         user = CustomUser.objects.filter(Q(email=username_or_email) | Q(username_or_email)).first()
+
+         if user and user.check_password(password):
+            return user
+         else: 
+            raise serializers.ValidationError("Credenciais inválidas")
+      else:
+         raise serializers.ValidationError("Necessário fornecer um nome de usuário ou email e senha")
 
 class CustomUserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=True)

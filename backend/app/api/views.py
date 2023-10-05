@@ -4,10 +4,13 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework.generics import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 from ..models import CustomUser, Processo
-from .serializers import CustomUserSerializer, PostSerializer
+from .serializers import CustomLoginUserSerializer, CustomUserSerializer, PostSerializer
 from rest_framework_jwt.settings import api_settings
-from rest_framework.views import APIView
+# from rest_framework.views import APIView
+# from rest_framework.permissions import IsAuthenticated
+from django.db.models import Q
 
 # Crie um objeto logger
 logger = logging.getLogger(__name__)
@@ -54,18 +57,24 @@ class CustomUserViewSet(ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class CustomUserLogin(APIView):
-    def post(self, request, *args, **kwargs):
-        username_or_email = request.data.get('username_or_email')
-        password = request.data.get('password')
-        
-        user = CustomUser.objects.filter(email=username_or_email).first() or CustomUser.objects.filter(username=username_or_email).first()
-        
+class CustomUserLoginViewSet(viewsets.ViewSet):
+    serializer_class = CustomLoginUserSerializer
+    
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        username_or_email = serializer.validated_data.get('username_or_email')
+        password = serializer.validated_data.get('password')
+
+        user = CustomUser.objects.filter(Q(email=username_or_email)| Q(username=username_or_email)).first()
+
         if user and user.check_password(password):
             jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+            jwt_encode_handler  = api_settings.JWT_ENCODE_HANDLER
             payload = jwt_payload_handler(user)
             token = jwt_encode_handler(payload)
+
             return Response({'token': token}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Credenciais inválidas'}, status=status.HTTP_401_UNAUTHORIZED)

@@ -1,67 +1,48 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 
-interface LoginFormData {
-  identifier: string;
-  password: string;
-}
-
 const LoginPage: React.FC = () => {
-  const [loginFormData, setLoginFormData] = useState<LoginFormData>({
-    identifier: "",
+  const [formData, setFormData] = useState({
+    username_or_email: "",
     password: "",
   });
 
-  const handleLoginInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = event.target;
-    setLoginFormData((prevData) => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleLoginSubmit = async (event: React.FormEvent): Promise<void> => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/login/", // Endpoint de login na sua API
-        loginFormData
-      );
-
-      // Lógica de autenticação bem-sucedida
-      console.log("Login bem-sucedido:", response.data);
-
-      // Redirecionar ou executar outras ações após o login bem-sucedido
+      const response = await axios.post("http://127.0.0.1:8000/api/login/", formData);
+      console.log(response.data);
     } catch (error) {
       console.error("Erro ao fazer login:", error);
-      // Lógica para tratar erros de login, se necessário
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Faça login na sua conta
-          </h2>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLoginSubmit}>
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded shadow-lg">
+        <h2 className="text-3xl font-extrabold text-gray-900 text-center">Faça login na sua conta</h2>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="identifier" className="block text-sm font-medium text-gray-600">
-              Email ou Nome de Usuário
+            <label htmlFor="username_or_email" className="block text-sm font-medium text-gray-600">
+              Nome de Usuário ou Email
             </label>
             <input
               type="text"
-              name="identifier"
-              id="identifier"
+              name="username_or_email"
+              id="username_or_email"
               autoComplete="username"
               required
               className="mt-1 p-2 w-full border rounded-md"
-              value={loginFormData.identifier}
-              onChange={handleLoginInputChange}
+              value={formData.username_or_email}
+              onChange={handleInputChange}
             />
           </div>
           <div>
@@ -75,19 +56,24 @@ const LoginPage: React.FC = () => {
               autoComplete="current-password"
               required
               className="mt-1 p-2 w-full border rounded-md"
-              value={loginFormData.password}
-              onChange={handleLoginInputChange}
+              value={formData.password}
+              onChange={handleInputChange}
             />
           </div>
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              className="w-full bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring focus:ring-indigo-200"
             >
               Entrar
             </button>
           </div>
         </form>
+        <div className="text-center mt-4">
+          <p className="text-sm text-gray-600 hover:text-gray-800 cursor-pointer">
+            Ainda não tem uma conta? <a href="/signup">Registre-se</a>.
+          </p>
+        </div>
       </div>
     </div>
   );
