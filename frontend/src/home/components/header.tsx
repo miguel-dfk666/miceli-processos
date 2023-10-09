@@ -50,7 +50,7 @@
             {menuOpen && (
               <div className="fixed mt-1 bg-white border border-gray-300 rounded shadow-lg" style={{ top: menuPosition.top, left: menuPosition.left }}>
                 <button className="block px-4 py-2 hover:bg-gray-100 w-30 text-left" onClick={handleLogout}>
-                  Logout
+                  <a href="/login">Logout</a>
                 </button>
               </div>
             )}

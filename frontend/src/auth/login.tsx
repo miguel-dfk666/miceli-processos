@@ -78,7 +78,7 @@ const LoginPage: React.FC = () => {
               type="submit"
               className="w-full bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring focus:ring-indigo-200"
             >
-              Entrar
+              <a href="/">Entrar</a>
             </button>
           </div>
         </form>
