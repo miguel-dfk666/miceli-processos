@@ -60,11 +60,13 @@ const MainContent: React.FC<MainContentProps> = ({
           Confirmar
         </button>
       </div>
-      {/* Renderize os dados dos processos */}
       {processos.map((processo) => (
         <div key={processo.id} className="border border-gray-300 p-2 mb-2 rounded-md">
           <strong>Número do Processo:</strong> {processo.numero_processo}<br />
-          <strong>Descrição:</strong> {processo.descricao}
+          <strong>Numero Dossiê:</strong> {processo.numero_dossie}<br />
+          <strong>Data do processo:</strong> {processo.data_cadastro}<br />
+          <strong>Descrição:</strong> {processo.descricao} <br />
+          <strong></strong>
         </div>
       ))}
     </main>

@@ -6,6 +6,12 @@ from django.db.models import Q
 class CustomLoginUserSerializer(serializers.ModelSerializer):
    username_or_email = serializers.CharField(required=True)
    password = serializers.CharField(required=True, write_only=True)
+   class Meta:
+        model = CustomUser
+        fields = ['username_or_email', 'password']
+        extra_kwargs = {
+            'password': {'write_only': True},
+       }
 
    def validate(self, data):
       username_or_email = data.get('username_or_email')
@@ -38,8 +44,6 @@ class CustomUserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data.pop('confirm_password')
         return CustomUser.objects.create_user(**validated_data)
-
-
 
 class PostSerializer(ModelSerializer):
   class Meta:

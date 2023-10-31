@@ -7,7 +7,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework import viewsets
 from ..models import CustomUser, Processo
 from .serializers import CustomLoginUserSerializer, CustomUserSerializer, PostSerializer
-from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.settings import api_settings
 # from rest_framework.views import APIView
 # from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
