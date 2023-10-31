@@ -30,7 +30,7 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractBaseUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, unique=True)
-    password = models.CharField(max_length=128)
+    password = models.CharField(max_length=120)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -58,8 +58,8 @@ class Processo(models.Model):
         null=True
     )
     classe_processo = models.CharField(max_length=100, null=True)
-    assunto_principal = models.CharField(max_lenght=255, null=True)
-    data_recebimento = models.DateField(default=timezone.now)
+    assunto_principal = models.CharField(max_length=255, null=True)
+    data_recebimento = models.DateTimeField(auto_now=True)
     vara = models.CharField(max_length=100, null=True)
 
     def save(self, *args, **kwargs):
