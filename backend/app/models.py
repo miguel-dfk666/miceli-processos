@@ -42,11 +42,9 @@ class CustomUser(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-class Processo(models.Model):
-    data_processo = models.DateField(default=timezone.now)
-    numero_processo = models.CharField(max_length=30, null=True)
+class Advogado(models.Model):
     advogado_nome = models.CharField(max_length=100, null=True)
-    advogado_oab= models.CharField(
+    advogado_oab = models.CharField(
         max_length=30,
         validators=[
             RegexValidator(
@@ -54,13 +52,34 @@ class Processo(models.Model):
                 message='O número da OAB deve estar no formato correto (UFXXXX). Exemplo: AB1234.',
             ),
         ],
-        unique=True,
         null=True
     )
+
+    def __str__(self):
+        return self.advogado
+
+
+class Processo(models.Model):
+    
+    # Informações processo
+    numero_processo = models.CharField(max_length=100, null=True)
     classe_processo = models.CharField(max_length=100, null=True)
     assunto_principal = models.CharField(max_length=255, null=True)
-    data_recebimento = models.DateTimeField(auto_now=True)
+    data_recebimento =  models.DateField(timezone.now)
     vara = models.CharField(max_length=100, null=True)
+
+    
+    # Advogado
+    advogado = models.ForeignKey(Advogado, on_delete=models.CASCADE)
+
+    # afins
+    # homologacao = models.CharField(max_length=100, null=True)
+    # extincao = models.CharField(max_length=100, null=True)
+    # procedencia = models.CharField(max_length=100, null=True)
+    # dano_moral = models.CharField(max_length=100, null=True)
+    # dano_materia = models.CharField(max_length=100, null=True)
+    # litigancia = models.CharField(max_length=100, null=True)
+    # improcedente = models.CharField(max_length=100, null=True)
 
     def save(self, *args, **kwargs):
         self.data_atualizacao = timezone.now()

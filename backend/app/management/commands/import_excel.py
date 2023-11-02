@@ -11,13 +11,11 @@ class Command(BaseCommand):
         
         for _, linha in dados_excel.iterrows():
             processo = Processo(
-                data_processo=linha['data_processo'], 
-                numero_processo=linha['numero_processo'],
-                advogado_nome=linha['advogado_nome'],
-                advogado_oab=linha['advogado_oab'],
-                classe_processo=linha['classe_processo'],
-                assunto_principal=linha['assunto_principal']
-                data_recebimento=linha['data_recebimento'],
-                vara=linha['vara']
+                numero_processo = linha['Numero do Processo'],
+                advogado = linha['Advogado'],
+                classe_do_processo = linha['Classe do Processo'],
+                assunto_principal = linha['Assunto Principal'],
+                data_recebimento = linha['Data Recebimento'],
+                vara = linha['Vara'],
             )
             processo.save()

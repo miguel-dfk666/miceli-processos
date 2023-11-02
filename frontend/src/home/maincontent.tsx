@@ -1,14 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
+// import { Chart } from "react-google-charts";
 import Dropdown from './components/dropdown';
-import Processo from '../libs/processos'; 
+import ProcessoDetails from './components/processdetail'; // Importe o componente ProcessoDetails
+import AdvogadoDetails from './components/advogadodetail'; // Importe o componente AdvogadoDetails
 
 interface MainContentProps {
   selectedOption: string;
   subOption: string;
   onOptionChange: (option: string) => void;
   onSubOptionChange: (subOption: string) => void;
-  processos: Processo[];
-  onConfirmClick: () => void; // Função para lidar com o clique no botão Confirmar
+  onConfirmClick: () => void;
+  processoInfo: {
+    id: number;
+    numero_processo: string;
+    data_processo: string;
+    assunto_principal: string;
+  };
+  advogadoInfo: {
+    id: number;
+    advogado_oab: string;
+    advogado_nome: string;
+    total_processos: number;
+  };
 }
 
 const MainContent: React.FC<MainContentProps> = ({
@@ -16,9 +29,37 @@ const MainContent: React.FC<MainContentProps> = ({
   subOption,
   onOptionChange,
   onSubOptionChange,
-  processos,
-  onConfirmClick,
 }) => {
+  const [processoInfo, setProcessoInfo] = useState<any>(null); // Estado para armazenar informações do processo
+  const [advogadoInfo, setAdvogadoInfo] = useState<any>(null); // Estado para armazenar informações do advogado
+
+  const handleConfirmClick = () => {
+    // Simulando uma chamada à API com um atraso de 1 segundo
+    setTimeout(() => {
+      if (selectedOption === 'Número do Processo') {
+        // Simulando uma resposta da API para um número de processo específico (subOption)
+        const resultadoDaBusca = {
+          id: 1,
+          numero_processo: subOption,
+          data_processo: '2023-11-01',
+          assunto_principal: 'Assunto do Processo',
+        };
+        setProcessoInfo(resultadoDaBusca); // Atualizando o estado com as informações do processo
+        setAdvogadoInfo(null); // Resetando as informações do advogado
+      } else if (selectedOption === 'Número OAB') {
+        // Simulando uma resposta da API para um número de OAB específico (subOption)
+        const resultadoDaBusca = {
+          id: 1,
+          advogado_oab: subOption,
+          advogado_nome: 'Rafael de Oliveira de Santos',
+          total_processos: 10,
+        };
+        setAdvogadoInfo(resultadoDaBusca); // Atualizando o estado com as informações do advogado
+        setProcessoInfo(null); // Resetando as informações do processo
+      }
+    }, 1000); // Atraso de 1 segundo para simular a chamada à API
+  };
+
   return (
     <main className="flex-1 p-10 flex flex-col">
       <div className="mb-4 flex items-center">
@@ -54,21 +95,21 @@ const MainContent: React.FC<MainContentProps> = ({
           />
         )}
         <button
-          onClick={onConfirmClick}
+          onClick={() => {
+            // Quando o botão "Confirmar" é clicado, chama a função handleConfirmClick
+            handleConfirmClick();
+          }}
           className="bg-gray-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-gray-600 transition duration-300"
         >
           Confirmar
         </button>
       </div>
-      {processos.map((processo) => (
-        <div key={processo.id} className="border border-gray-300 p-2 mb-2 rounded-md">
-          <strong>Número do Processo:</strong> {processo.numero_processo}<br />
-          <strong>Numero Dossiê:</strong> {processo.numero_dossie}<br />
-          <strong>Data do processo:</strong> {processo.data_cadastro}<br />
-          <strong>Descrição:</strong> {processo.descricao} <br />
-          <strong></strong>
-        </div>
-      ))}
+
+      {/* Exibe detalhes do processo se processoInfo estiver definido */}
+      {processoInfo && <ProcessoDetails processo={processoInfo} />}
+
+      {/* Exibe detalhes do advogado se advogadoInfo estiver definido */}
+      {advogadoInfo && <AdvogadoDetails advogado={advogadoInfo} />}
     </main>
   );
 };
